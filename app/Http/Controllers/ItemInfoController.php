@@ -3,16 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\ItemInfo;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\View\View;
 
 class ItemInfoController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
         $items = ItemInfo::all();
 
@@ -22,7 +24,7 @@ class ItemInfoController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
         return view('items.create');
     }
@@ -30,7 +32,7 @@ class ItemInfoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $data = $request->validate([
             'item_name' => 'required|string|max:255',
@@ -69,7 +71,7 @@ class ItemInfoController extends Controller
         return view('items.edit', compact('itemInfo'));
     }
     */
-    public function edit($id)
+    public function edit(int $id): View
     {
         $itemInfo = ItemInfo::findOrFail($id);
         return view('items.edit', compact('itemInfo'));
@@ -78,15 +80,15 @@ class ItemInfoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): RedirectResponse
     {
 
         $itemInfo = ItemInfo::findOrFail($id);
 
 
         $request->validate([
-            'item_name' => 'required',
-            'item_id' => 'required',
+            'item_name' => 'required|string|max:255',
+            'item_id' => 'required|string',
             'item_icon' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
@@ -120,7 +122,7 @@ class ItemInfoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(int $id): RedirectResponse
     {
         $itemInfo = ItemInfo::findOrFail($id);
         $itemInfo->delete();

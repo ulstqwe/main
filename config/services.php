@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'stalcraft' => [
+        'token' => env('STALCRAFT_API_TOKEN'),
+        'base_url' => env('STALCRAFT_BASE_URL', 'dapi.stalcraft.net'),
+    ],
+
 ];
