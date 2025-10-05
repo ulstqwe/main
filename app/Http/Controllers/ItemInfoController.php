@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ItemEditRequest;
 use App\Models\ItemInfo;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -37,16 +38,12 @@ class ItemInfoController extends Controller
 
     /**
      * Запись созданного предмета в базу данных
-     * @param Request $request Входящий HTTP запрос, в который входит название предмета, id предмета и его изображение
+     * @param ItemEditRequest $request Входящий HTTP запрос, в который входит название предмета, id предмета и его изображение
      * @return RedirectResponse
      */
-    public function store(Request $request): RedirectResponse
+    public function store(ItemEditRequest $request): RedirectResponse
     {
-        $data = $request->validate([
-            'item_name' => 'required|string|max:255',
-            'item_id' => 'required|string',
-            'item_icon' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // максимум 2MB
-        ]);
+        $data = $request->validated();
 
         // Сохраняем изображение
         if ($request->hasFile('item_icon')) {
@@ -86,22 +83,12 @@ class ItemInfoController extends Controller
      * @param int $id id предмета
      * @return RedirectResponse
      */
-    public function update(Request $request, int $id): RedirectResponse
+    public function update(ItemEditRequest $request, int $id): RedirectResponse
     {
 
         $itemInfo = ItemInfo::findOrFail($id);
 
-
-        $request->validate([
-            'item_name' => 'required|string|max:255',
-            'item_id' => 'required|string',
-            'item_icon' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
-        ]);
-
-        $data = [
-            'item_name' => $request->input('item_name'),
-            'item_id' => $request->input('item_id'),
-        ];
+        $data = $request->validated();
 
         // Обработка загрузки изображения
         if ($request->hasFile('item_icon')) {

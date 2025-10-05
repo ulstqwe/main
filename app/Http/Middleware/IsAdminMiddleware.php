@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 class IsAdminMiddleware
 {
     /**
-     * Handle an incoming request.
+     * Проверка, является ли пользователь администратором
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */

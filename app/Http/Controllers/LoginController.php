@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -16,17 +18,12 @@ class LoginController extends Controller
 
     /**
      * Авторизация пользователя
-     * @param Request $request Входящий HTTP запрос, в который входит email пользователя и пароль
+     * @param LoginRequest $request Входящий HTTP запрос, в который входит email пользователя и пароль
      * @return RedirectResponse
      */
-    public function login(Request $request)
+    public function login(LoginRequest $request): RedirectResponse
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
-
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($request->validated())) {
             $request->session()->regenerate();
 
             return redirect()->intended('/');
@@ -39,18 +36,12 @@ class LoginController extends Controller
 
     /**
      * Регистрация пользователя
-     * @param Request $request Входящий HTTP запрос, в который входит имя пользователя, email и пароль
+     * @param RegisterRequest $request Входящий HTTP запрос, в который входит имя пользователя, email и пароль
      * @return RedirectResponse
      */
-    public function register(Request $request)
+    public function register(RegisterRequest $request): RedirectResponse
     {
-        $credentials = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
-
-        $user = User::create($credentials);
+        $user = User::create($request->validated());
         Auth::login($user);
         return redirect()->intended('/');
 

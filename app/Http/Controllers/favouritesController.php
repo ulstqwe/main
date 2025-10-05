@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddFavouriteRequest;
 use App\Models\favourites;
 use App\Models\ItemInfo;
 
@@ -36,21 +37,12 @@ class favouritesController extends Controller
 
     /**
      * Добавление предмета в избранное
-     * @param Request $request Входящий HTTP запрос, в который входит id предмета, id пользователя и название предмета
+     * @param AddFavouriteRequest $request Входящий HTTP запрос, в который входит id предмета, id пользователя и название предмета
      * @return RedirectResponse|View
      */
-    public function addFavourite(Request $request) : RedirectResponse|View
+    public function addFavourite(AddFavouriteRequest $request) : RedirectResponse|View
     {
         $userId = Auth::id();
-        //$item_name = ItemInfo::find('item_name');
-
-
-        $request->validate([
-            'user_id' => 'required|integer',
-            'item_id' => 'required|string',
-            'item_name' => 'required|string',
-
-        ]);
 
         try {
             // Проверяем, нет ли уже такой записи
