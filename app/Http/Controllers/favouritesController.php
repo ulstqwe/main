@@ -11,9 +11,19 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\View\View;
 
-
+/**
+ * Контроллер для работы с добавлением/удалением предмета в избранное
+ * @package App\Http\Controllers
+ */
 class favouritesController extends Controller
 {
+
+    /**
+     * Отображение информации и предмете на странице избранного
+     * @param Request $request Входящий HTTP запрос, в который входит id предмета
+     * @return View
+     * @throws \Illuminate\Http\Client\ConnectionException
+     */
     public function index(Request $request): View
     {
         $fav_info = Favourites::where('user_id', auth()->id())->get();
@@ -24,6 +34,11 @@ class favouritesController extends Controller
         return view('favourites', compact('fav_info', 'data', 'item_id'));
     }
 
+    /**
+     * Добавление предмета в избранное
+     * @param Request $request Входящий HTTP запрос, в который входит id предмета, id пользователя и название предмета
+     * @return RedirectResponse|View
+     */
     public function addFavourite(Request $request) : RedirectResponse|View
     {
         $userId = Auth::id();
@@ -36,8 +51,6 @@ class favouritesController extends Controller
             'item_name' => 'required|string',
 
         ]);
-
-        //$favouriteItem = favourites::create($credentials);
 
         try {
             // Проверяем, нет ли уже такой записи
@@ -66,7 +79,11 @@ class favouritesController extends Controller
 
     }
 
-    public function removeFavourite(Request $request): RedirectResponse|View
+    /**
+     * Удаление предмета из избранного
+     * @return RedirectResponse|View
+     */
+    public function removeFavourite(): RedirectResponse|View
     {
         $userId = Auth::id();
 

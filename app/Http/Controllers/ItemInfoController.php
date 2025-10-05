@@ -9,10 +9,15 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
+/**
+ * Контроллер для создания/удаления/редактирования предметов в базе данных
+ * @package App\Http\Controllers
+ */
 class ItemInfoController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Отображение данных из базы
+     * @return View
      */
     public function index(): View
     {
@@ -22,7 +27,8 @@ class ItemInfoController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Отображение формы для добавления предмета
+     * @return View
      */
     public function create(): View
     {
@@ -30,7 +36,9 @@ class ItemInfoController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Запись созданного предмета в базу данных
+     * @param Request $request Входящий HTTP запрос, в который входит название предмета, id предмета и его изображение
+     * @return RedirectResponse
      */
     public function store(Request $request): RedirectResponse
     {
@@ -53,32 +61,30 @@ class ItemInfoController extends Controller
         return redirect()->route('items.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(ItemInfo $itemInfo)
     {
         //
     }
 
+
     /**
-     * Show the form for editing the specified resource.
+     * Редактирование уже созданного предмета
+     * @param int $id id предмета
+     * @return View
      */
-    /*
-    public function edit(ItemInfo $itemInfo)
-    {
-        dd($itemInfo);
-        return view('items.edit', compact('itemInfo'));
-    }
-    */
     public function edit(int $id): View
     {
         $itemInfo = ItemInfo::findOrFail($id);
         return view('items.edit', compact('itemInfo'));
     }
 
+
     /**
-     * Update the specified resource in storage.
+     * Обновление данных о предмете
+     * @param Request $request Входящий HTTP запрос, в который входит название предмета, id предмета и его изображение
+     * @param int $id id предмета
+     * @return RedirectResponse
      */
     public function update(Request $request, int $id): RedirectResponse
     {
@@ -119,8 +125,11 @@ class ItemInfoController extends Controller
         return redirect()->route('items.index', );
     }
 
+
     /**
-     * Remove the specified resource from storage.
+     * Удаление записи о предмете из базы данных
+     * @param int $id id предмета
+     * @return RedirectResponse
      */
     public function destroy(int $id): RedirectResponse
     {
