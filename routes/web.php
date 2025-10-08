@@ -33,7 +33,9 @@ Route::post('/favourites', [favouritesController::class, 'addFavourite'])->name(
 Route::post('/favourites', [favouritesController::class, 'removeFavourite'])->name('user-item.remove');
 
 //добавление/удаление предметов в базу данных
-Route::resource('items', ItemInfoController::class)->middleware(IsAdminMiddleware::class);
+Route::resource('/items', ItemInfoController::class, [
+    'parameters' => ['items' => 'itemInfo'],
+])->middleware(IsAdminMiddleware::class);
 
 //Route::get('/items', [ItemInfoController::class, 'index'])->name('items.index');
 //Route::get('/items/{itemInfo}/edit', [ItemInfoController::class, 'edit'])->name('items.edit');

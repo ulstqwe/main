@@ -67,26 +67,28 @@ class ItemInfoController extends Controller
 
     /**
      * Редактирование уже созданного предмета
-     * @param int $id id предмета
+     * @param ItemInfo $itemInfo id предмета
      * @return View
      */
-    public function edit(int $id): View
+    //public function edit(int $id): View
+    public function edit(ItemInfo $itemInfo): View
     {
-        $itemInfo = ItemInfo::findOrFail($id);
+        //$itemInfo = ItemInfo::findOrFail($id);
         return view('items.edit', compact('itemInfo'));
     }
 
 
     /**
      * Обновление данных о предмете
-     * @param Request $request Входящий HTTP запрос, в который входит название предмета, id предмета и его изображение
-     * @param int $id id предмета
+     * @param ItemEditRequest $request Входящий HTTP запрос, в который входит название предмета, id предмета и его изображение
+     * @param ItemInfo $itemInfo id предмета
      * @return RedirectResponse
      */
-    public function update(ItemEditRequest $request, int $id): RedirectResponse
+    //public function update(ItemEditRequest $request, int $id): RedirectResponse
+    public function update(ItemEditRequest $request, ItemInfo $itemInfo): RedirectResponse
     {
 
-        $itemInfo = ItemInfo::findOrFail($id);
+        //$itemInfo = ItemInfo::findOrFail($id);
 
         $data = $request->validated();
 
@@ -115,14 +117,16 @@ class ItemInfoController extends Controller
 
     /**
      * Удаление записи о предмете из базы данных
-     * @param int $id id предмета
+     * @param ItemInfo $itemInfo id предмета
      * @return RedirectResponse
      */
-    public function destroy(int $id): RedirectResponse
+    //public function destroy(int $id): RedirectResponse
+    public function destroy(ItemInfo $itemInfo): RedirectResponse
     {
-        $itemInfo = ItemInfo::findOrFail($id);
+        //$itemInfo = ItemInfo::findOrFail($id);
+
         $itemInfo->delete();
 
-        return redirect()->route('items.index');
+        return redirect()->route('items.index')->with('success', 'Предмет успешно удален');
     }
 }
